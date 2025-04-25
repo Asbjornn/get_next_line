@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:07:25 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/04/25 14:17:48 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/04/25 16:27:11 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ static char	*read_lines(int fd, char *stash)
 		if (bytes < 0)
 		{
 			free(buffer);
+			free(stash);
 			return (NULL);
 		}
 		buffer[bytes] = '\0';
 		tmp = ft_strjoin(stash, buffer);
-		free(stash);
 		stash = tmp;
 	}
 	free(buffer);
@@ -99,6 +99,8 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*line;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
 	stash = read_lines(fd, stash);
 	if (!stash || !stash[0])
 	{
@@ -108,30 +110,32 @@ char	*get_next_line(int fd)
 	}
 	line = get_line(stash);
 	stash = new_stash(stash);
+	if (!stash)
+		free(stash);
 	return (line);
 }
 
-#include <fcntl.h>      // pour open()
-#include <stdio.h>      // pour printf()
-#include <stdlib.h>     // pour free()
+// #include <fcntl.h>      // pour open()
+// #include <stdio.h>      // pour printf()
+// #include <stdlib.h>     // pour free()
 
-char *get_next_line(int fd); // Ta fonction
+// char *get_next_line(int fd); // Ta fonction
 
-int main(void)
-{
-    int fd = open("test.txt", O_RDONLY);
-    char *line;
+// int main(void)
+// {
+//     int fd = open("test.txt", O_RDONLY);
+//     char *line;
 
-    if (fd < 0)
-    {
-        perror("open");
-	return 1;
-	}
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("Ligne lue : %s", line);
-		free(line); // Important pour éviter les fuites mémoire
-	}
-	close(fd);
-	return 0;
-}
+//     if (fd < 0)
+//     {
+//         perror("open");
+// 	return 1;
+// 	}
+// 	while ((line = get_next_line(fd)) != NULL)
+// 	{
+// 		printf("Ligne lue : %s", line);
+// 		free(line);
+// 	}
+// 	close(fd);
+// 	return 0;
+// }

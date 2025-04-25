@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:08:19 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/04/25 14:14:34 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/04/25 15:27:21 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,30 @@ char	*ft_strchr(const char *s, int c)
 
 char	*ft_strjoin(char *s1, const char *s2)
 {
-	int		i;
-	int		j;
+	int		i[2];
 	char	*result;
 
 	if (!s1)
 	{
-		s1 = (char *)malloc(sizeof(char));
+		s1 = (char *)malloc(sizeof(char) * 1);
+		if (!s1)
+			return (NULL);
 		s1[0] = '\0';
 	}
 	result = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!result)
-		return (NULL);
-	i = 0;
-	j = -1;
-	while (s1[i])
 	{
-		result[i] = s1[i];
-		i++;
+		free(s1);
+		return (NULL);
 	}
-	while (s2[++j])
-		result [i + j] = s2[j];
-	result[i + j] = '\0';
+	i[0] = -1;
+	i[1] = -1;
+	while (s1[++i[0]])
+		result[i[0]] = s1[i[0]];
+	while (s2[++i[1]])
+		result [i[0] + i[1]] = s2[i[1]];
+	result[i[0] + i[1]] = '\0';
+	free(s1);
 	return (result);
 }
 
