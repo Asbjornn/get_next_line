@@ -6,12 +6,14 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:07:25 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/04/25 16:27:11 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/05/06 15:57:22 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 19
+#endif
 #include "get_next_line.h"
-//#define BUFFER_SIZE 42
 
 static int	is_backstab(char *stash)
 {
@@ -26,6 +28,8 @@ static int	is_backstab(char *stash)
 			return (1);
 		i++;
 	}
+	if (stash[i] == '\n')
+		return (1);
 	return (0);
 }
 
@@ -63,6 +67,8 @@ static char	*get_line(char *stash)
 	int		j;
 
 	i = 0;
+	if (!stash)
+		return (NULL);
 	while (stash[i] != '\n' && stash[i])
 		i++;
 	if (stash[i] == '\n')
@@ -100,7 +106,7 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
+		return (NULL);
 	stash = read_lines(fd, stash);
 	if (!stash || !stash[0])
 	{
@@ -110,8 +116,6 @@ char	*get_next_line(int fd)
 	}
 	line = get_line(stash);
 	stash = new_stash(stash);
-	if (!stash)
-		free(stash);
 	return (line);
 }
 
@@ -134,8 +138,12 @@ char	*get_next_line(int fd)
 // 	while ((line = get_next_line(fd)) != NULL)
 // 	{
 // 		printf("Ligne lue : %s", line);
+// 		if (line == NULL)
+// 			printf("null\n");
 // 		free(line);
 // 	}
+// 	if (line == NULL)
+// 		printf("null\n");
 // 	close(fd);
 // 	return 0;
 // }

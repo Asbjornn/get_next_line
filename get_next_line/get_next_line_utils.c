@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:08:19 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/04/25 15:27:21 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/05/06 14:16:45 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strchr(const char *s, int c)
 	unsigned int	i;
 	unsigned char	c_bis;
 
+	if (!*s || !c)
+		return (NULL);
 	i = 0;
 	c_bis = (unsigned char)c;
 	while (s[i])
